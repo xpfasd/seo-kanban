@@ -487,9 +487,12 @@
       const totalDays = 14;
       
       let taskId = 1;
-      for (let day = 0; day < totalDays; day++) {
-        const cycleDay = day % cycleLength;
+      let currentDay = 0;
+      
+      while (tasks.length < 40) { // 生成足够多的任务
+        const cycleDay = currentDay % cycleLength;
         const startIdx = cycleDay * tasksPerDay;
+        let addedToday = 0;
         
         for (let i = 0; i < tasksPerDay; i++) {
           const projIdx = startIdx + i;
@@ -497,11 +500,11 @@
           
           const project = projectsList[projIdx];
           const projectTaskList = PROJECT_TASKS[project];
-          const taskIdx = Math.floor(day / cycleLength) % projectTaskList.length;
+          const taskIdx = Math.floor(currentDay / cycleLength) % projectTaskList.length;
           const taskInfo = projectTaskList[taskIdx];
           
           const date = new Date(today);
-          date.setDate(date.getDate() + day);
+          date.setDate(date.getDate() + currentDay);
           
           tasks.push({
             id: Date.now() + taskId++,
@@ -511,9 +514,13 @@
             pages: taskInfo.page,
             desc: taskInfo.desc,
             date: date.toISOString().split('T')[0],
-            status: day === 0 ? 'progress' : 'todo'
+            status: currentDay === 0 ? 'progress' : 'todo'
           });
+          addedToday++;
         }
+        
+        if (addedToday === 0) break;
+        currentDay++;
       }
       
       const past = new Date(today);
