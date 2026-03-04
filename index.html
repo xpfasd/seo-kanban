@@ -464,6 +464,11 @@
       const saved = localStorage.getItem('seo-tasks');
       if (saved) {
         tasks = JSON.parse(saved);
+        // 如果任务为空，重新生成
+        if (!tasks || tasks.length === 0) {
+          tasks = getDefaultTasks();
+          saveTasks();
+        }
       } else {
         // 默认任务
         tasks = getDefaultTasks();
