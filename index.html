@@ -429,39 +429,57 @@
       const today = new Date();
       const tasks = [];
       
-      // 详细任务计划 - 每2天每个项目更新一次
+      // 详细任务计划 - 每天都有更新，每个项目每2天更新一次
+      // 5个项目交替，确保每天2-3个任务
       const schedule = [
         // Day 1 (今天)
         { project: "DaysCalculator", keywords: "date duration calculator, days between dates", pages: "date-duration.html", desc: "创建日期间隔时长计算页面" },
         { project: "crazychicken3d", keywords: "chicken game levels, level guide", pages: "level-guide.html", desc: "创建关卡指南页面" },
+        { project: "GlobalLinguaHub", keywords: "language exchange apps, tandem language", pages: "language-exchange.html", desc: "创建语言交换应用推荐页面" },
+        
+        // Day 2
+        { project: "symbol", keywords: "arrow symbols copy paste, unicode arrows", pages: "arrow-symbols.html", desc: "创建箭头符号页面" },
+        { project: "v0-clicker", keywords: "typing practice games, improve typing speed", pages: "typing-games.html", desc: "创建打字练习游戏页面" },
         
         // Day 3
-        { project: "GlobalLinguaHub", keywords: "language exchange apps, tandem language", pages: "language-exchange.html", desc: "创建语言交换应用推荐页面" },
-        { project: "symbol", keywords: "arrow symbols copy paste, unicode arrows", pages: "arrow-symbols.html", desc: "创建箭头符号页面" },
-        
-        // Day 5
-        { project: "v0-clicker", keywords: "typing practice games, improve typing speed", pages: "typing-games.html", desc: "创建打字练习游戏页面" },
         { project: "DaysCalculator", keywords: "time zone converter, timezone calculator", pages: "timezone-calculator.html", desc: "创建时区转换计算器页面" },
-        
-        // Day 7
         { project: "crazychicken3d", keywords: "chicken game achievements, unlock achievements", pages: "achievements-guide.html", desc: "成就系统指南页面" },
         { project: "GlobalLinguaHub", keywords: "podcast learning english, listen english", pages: "english-podcasts.html", desc: "英语播客推荐页面" },
         
-        // Day 9
+        // Day 4
         { project: "symbol", keywords: "math symbols copy, mathematical notation", pages: "math-symbols.html", desc: "创建数学符号页面" },
         { project: "v0-clicker", keywords: "keyboard shortcuts, keyboard tips", pages: "keyboard-shortcuts.html", desc: "键盘快捷键页面" },
         
-        // Day 11
+        // Day 5
         { project: "DaysCalculator", keywords: "countdown timer, event countdown", pages: "event-countdown.html", desc: "创建活动倒计时页面" },
         { project: "crazychicken3d", keywords: "chicken game skins, customize chicken", pages: "skins-gallery.html", desc: "皮肤展示页面" },
-        
-        // Day 13
         { project: "GlobalLinguaHub", keywords: "english movies subtitles, learn english movies", pages: "english-movies.html", desc: "英语电影推荐页面" },
+        
+        // Day 6
         { project: "symbol", keywords: "emoji meanings, what does emoji mean", pages: "emoji-dictionary.html", desc: "Emoji 含义词典" },
+        { project: "v0-clicker", keywords: "typing test wpm, measure typing speed", pages: "typing-speed-test.html", desc: "打字速度测试页面" },
+        
+        // Day 7
+        { project: "DaysCalculator", keywords: "birthday calculator, age from birthday", pages: "birthday-calculator.html", desc: "生日年龄计算器页面" },
+        { project: "crazychicken3d", keywords: "multiplayer mode, play with friends", pages: "multiplayer-guide.html", desc: "多人游戏指南" },
+        { project: "GlobalLinguaHub", keywords: "flashcard apps, spaced repetition", pages: "flashcard-apps.html", desc: "背单词应用推荐" },
+        
+        // Day 8
+        { project: "symbol", keywords: "heart symbols copy, love emojis", pages: "heart-symbols.html", desc: "爱心符号页面" },
+        { project: "v0-clicker", keywords: "mechanical keyboard, keyboard review", pages: "mechanical-keyboards.html", desc: "机械键盘页面" },
+        
+        // Day 9
+        { project: "DaysCalculator", keywords: "work days calculator, business days", pages: "work-days-calculator.html", desc: "工作日计算器" },
+        { project: "crazychicken3d", keywords: "power ups, boost items", pages: "power-ups-guide.html", desc: "道具使用指南" },
+        { project: "GlobalLinguaHub", keywords: "youtube english learning, learn from youtube", pages: "youtube-english.html", desc: "YouTube英语学习" },
+        
+        // Day 10
+        { project: "symbol", keywords: "music symbols, notes emoji", pages: "music-symbols.html", desc: "音乐符号页面" },
+        { project: "v0-clicker", keywords: "typing errors, common mistakes", pages: "typing-mistakes.html", desc: "常见打字错误" },
       ];
       
       for (let i = 0; i < schedule.length; i++) {
-        const dayIndex = Math.floor(i / 2) * 2; // 每2天
+        const dayIndex = i; // 每天都有任务
         const date = new Date(today);
         date.setDate(date.getDate() + dayIndex);
         
@@ -473,7 +491,7 @@
           pages: schedule[i].pages,
           desc: schedule[i].desc,
           date: date.toISOString().split('T')[0],
-          status: i < 2 ? 'progress' : 'todo'
+          status: i < 3 ? 'progress' : 'todo'
         });
       }
       
