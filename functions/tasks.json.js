@@ -58,14 +58,14 @@ function generateDefaultTasks(today) {
   const tasks = [
     // Day 1 - 3 tasks
     { project: "DaysCalculator", keywords: "date duration calculator, days between dates", pages: "date-duration.html", desc: "日期间隔时长计算页面" },
-    { project: "crazychicken3d", keywords: "chicken game levels, level guide", pages: "level-guide.html", desc: "关卡指南页面" },
+    { project: "crazychicken3d", keywords: "popular io games, multiplayer browser games", pages: "io-games-collection.html", desc: "嵌入热门IO游戏集合" },
     { project: "GlobalLinguaHub", keywords: "language exchange apps, tandem language", pages: "language-exchange.html", desc: "语言交换应用推荐" },
     // Day 2 - 2 tasks
     { project: "symbol", keywords: "arrow symbols copy paste, unicode arrows", pages: "arrow-symbols.html", desc: "箭头符号页面" },
     { project: "v0-clicker", keywords: "typing practice games, improve typing speed", pages: "typing-games.html", desc: "打字练习游戏页面" },
     // Day 3 - 3 tasks
     { project: "DaysCalculator", keywords: "time zone converter, timezone calculator", pages: "timezone-calculator.html", desc: "时区转换计算器" },
-    { project: "crazychicken3d", keywords: "chicken game achievements, unlock achievements", pages: "achievements-guide.html", desc: "成就系统指南" },
+    { project: "crazychicken3d", keywords: "puzzle games embed, browser puzzle", pages: "puzzle-games.html", desc: "嵌入热门益智小游戏" },
     { project: "GlobalLinguaHub", keywords: "podcast learning english, listen english", pages: "english-podcasts.html", desc: "英语播客推荐" },
   ];
   
