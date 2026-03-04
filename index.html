@@ -174,6 +174,12 @@
       color: var(--primary);
     }
     
+    .task-keywords, .task-pages {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      margin-top: 6px;
+    }
+    
     .task.past {
       opacity: 0.5;
     }
@@ -354,8 +360,16 @@
           </select>
         </div>
         <div class="form-group">
-          <label>描述</label>
-          <textarea id="taskDesc" placeholder="可选描述..."></textarea>
+          <label>目标 SEO 关键词</label>
+          <input type="text" id="taskKeywords" placeholder="例如: date calculator, day counter">
+        </div>
+        <div class="form-group">
+          <label>目标页面</label>
+          <input type="text" id="taskPages" placeholder="例如: date-diff-v2.html">
+        </div>
+        <div class="form-group">
+          <label>详细描述</label>
+          <textarea id="taskDesc" placeholder="任务详细规划..."></textarea>
         </div>
         <div class="modal-actions">
           <button type="submit" class="btn btn-primary">保存</button>
@@ -400,36 +414,55 @@
       const today = new Date();
       const tasks = [];
       
-      // 历史任务 (过去2周)
-      for (let i = -14; i < 0; i++) {
-        const date = new Date(today);
-        date.setDate(date.getDate() + i);
-        if (i % 3 === 0) {
-          tasks.push({
-            id: Date.now() + Math.random(),
-            title: `SEO页面更新 ${date.toLocaleDateString('zh-CN')}`,
-            project: PROJECTS[Math.floor(Math.random() * 3)],
-            date: date.toISOString().split('T')[0],
-            status: 'done',
-            desc: '已完成'
-          });
+      // 示例详细任务
+      const sampleTasks = [
+        {
+          title: "DaysCalculator: 创建日期计算器新页面",
+          project: "DaysCalculator",
+          keywords: "business day calculator, working days between dates",
+          pages: "business-days-calculator.html",
+          desc: "研究并创建工作日计算器页面，优化相关长尾关键词"
+        },
+        {
+          title: "crazychicken3d: 添加新游戏攻略页面",
+          project: "crazychicken3d", 
+          keywords: "3d chicken game tips, crazy chicken strategy guide",
+          pages: "advanced-strategies.html",
+          desc: "创建高级游戏策略指南页面"
+        },
+        {
+          title: "GlobalLinguaHub: 英语学习新页面",
+          project: "GlobalLinguaHub",
+          keywords: "english vocabulary apps, vocabulary learning tools",
+          pages: "vocabulary-apps.html",
+          desc: "创建英语词汇学习应用推荐页面"
+        },
+        {
+          title: "symbol: 符号网站新页面",
+          project: "symbol",
+          keywords: "heart symbols copy paste, love emojis",
+          pages: "heart-symbols.html",
+          desc: "创建爱心符号页面，收集各种爱心emoji"
+        },
+        {
+          title: "v0-clicker: 打字速度测试新页面",
+          project: "v0-clicker",
+          keywords: "typing speed test wpm, keyboard practice online",
+          pages: "typing-test-advanced.html",
+          desc: "创建高级打字速度测试页面"
         }
-      }
+      ];
       
-      // 未来2周任务
-      for (let i = 0; i < 14; i++) {
+      // 添加示例任务
+      for (let i = 0; i < sampleTasks.length; i++) {
         const date = new Date(today);
         date.setDate(date.getDate() + i);
-        if (i % 2 === 0) {
-          tasks.push({
-            id: Date.now() + Math.random(),
-            title: `SEO页面更新 ${date.toLocaleDateString('zh-CN')}`,
-            project: PROJECTS[i % 3],
-            date: date.toISOString().split('T')[0],
-            status: i < 3 ? 'progress' : 'todo',
-            desc: ''
-          });
-        }
+        tasks.push({
+          id: Date.now() + i,
+          ...sampleTasks[i],
+          date: date.toISOString().split('T')[0],
+          status: i < 2 ? 'progress' : 'todo'
+        });
       }
       
       return tasks;
@@ -472,6 +505,8 @@
         <div class="task ${isPast ? 'past' : ''} ${isFuture ? 'future' : ''}" onclick="openModal('${task.id}')">
           <div class="task-date">${formatDate(task.date)}</div>
           <div class="task-title">${task.title}</div>
+          ${task.keywords ? `<div class="task-keywords">🔑 ${task.keywords}</div>` : ''}
+          ${task.pages ? `<div class="task-pages">📄 ${task.pages}</div>` : ''}
           <span class="task-project">${task.project}</span>
         </div>
       `;
@@ -511,6 +546,8 @@
           document.getElementById('taskProject').value = task.project;
           document.getElementById('taskDate').value = task.date;
           document.getElementById('taskStatus').value = task.status;
+          document.getElementById('taskKeywords').value = task.keywords || '';
+          document.getElementById('taskPages').value = task.pages || '';
           document.getElementById('taskDesc').value = task.desc || '';
           deleteBtn.style.display = 'block';
         }
@@ -541,6 +578,8 @@
         project: document.getElementById('taskProject').value,
         date: document.getElementById('taskDate').value,
         status: document.getElementById('taskStatus').value,
+        keywords: document.getElementById('taskKeywords').value,
+        pages: document.getElementById('taskPages').value,
         desc: document.getElementById('taskDesc').value
       };
       

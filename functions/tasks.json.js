@@ -9,7 +9,7 @@ export async function onRequestGet(context) {
   
   const response = {
     version: "1.0",
-    description: "SEO Tasks JSON API",
+    description: "SEO Tasks JSON API - 包含详细关键词和目标页面",
     generated_at: today.toISOString(),
     tasks: defaultTasks,
     projects: {
@@ -55,27 +55,38 @@ export async function onRequestGet(context) {
 }
 
 function generateDefaultTasks(today) {
-  const tasks = [];
-  const projects = ['DaysCalculator', 'crazychicken3d', 'GlobalLinguaHub', 'symbol', 'v0-clicker'];
-  
-  // 生成今天和未来7天的任务
-  for (let i = 0; i < 7; i++) {
-    const date = new Date(today);
-    date.setDate(date.getDate() + i);
-    const dateStr = date.toISOString().split('T')[0];
-    
-    if (i < 3) {
-      tasks.push({
-        id: `task-${i + 1}`,
-        title: `为 ${projects[i]} 添加新 SEO 页面`,
-        project: projects[i],
-        date: dateStr,
-        status: i === 0 ? "in_progress" : "todo",
-        action: "create_page",
-        details: `为 ${projects[i]} 项目创建一个新的 SEO 优化页面`
-      });
+  const tasks = [
+    {
+      id: "task-1",
+      title: "DaysCalculator: 创建日期计算器新页面",
+      project: "DaysCalculator",
+      date: today.toISOString().split('T')[0],
+      status: "in_progress",
+      keywords: "business day calculator, working days between dates",
+      pages: "business-days-calculator.html",
+      desc: "研究并创建工作日计算器页面，优化相关长尾关键词"
+    },
+    {
+      id: "task-2", 
+      title: "crazychicken3d: 添加新游戏攻略页面",
+      project: "crazychicken3d",
+      date: new Date(today.getTime() + 86400000).toISOString().split('T')[0],
+      status: "todo",
+      keywords: "3d chicken game tips, crazy chicken strategy guide",
+      pages: "advanced-strategies.html",
+      desc: "创建高级游戏策略指南页面"
+    },
+    {
+      id: "task-3",
+      title: "GlobalLinguaHub: 英语学习新页面",
+      project: "GlobalLinguaHub",
+      date: new Date(today.getTime() + 172800000).toISOString().split('T')[0],
+      status: "todo",
+      keywords: "english vocabulary apps, vocabulary learning tools",
+      pages: "vocabulary-apps.html",
+      desc: "创建英语词汇学习应用推荐页面"
     }
-  }
+  ];
   
   return tasks;
 }
