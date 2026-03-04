@@ -69,10 +69,10 @@ function generateDefaultTasks(today) {
       { keywords: "arcade games online, retro games", page: "arcade-games.html", desc: "经典街机游戏" }
     ],
     'GlobalLinguaHub': [
-      { keywords: "language exchange apps, tandem language", page: "language-exchange.html", desc: "语言交换App" },
-      { keywords: "podcast learning english, listen english", page: "english-podcasts.html", desc: "英语播客" },
-      { keywords: "english movies subtitles, learn english", page: "english-movies.html", desc: "英语电影" },
-      { keywords: "flashcard apps, spaced repetition", page: "flashcard-apps.html", desc: "背单词App" }
+      { keywords: "google gemini cli tutorial, gemini command line", page: "gemini-cli-tutorial.html", desc: "Gemini CLI 教程" },
+      { keywords: "google cli tools, google command line", page: "google-cli-tools.html", desc: "Google CLI 工具" },
+      { keywords: "ai coding assistant, ai programmer", page: "ai-coding-assistant.html", desc: "AI 编程助手" },
+      { keywords: "claude code vs github copilot, ai code completion", page: "ai-code-comparison.html", desc: "AI 代码工具对比" }
     ],
     'symbol': [
       { keywords: "arrow symbols copy paste, unicode arrows", page: "arrow-symbols.html", desc: "箭头符号" },
