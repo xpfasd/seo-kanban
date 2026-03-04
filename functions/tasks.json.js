@@ -56,39 +56,39 @@ export async function onRequestGet(context) {
 
 function generateDefaultTasks(today) {
   const tasks = [
-    {
-      id: "task-1",
-      title: "DaysCalculator: 创建日期计算器新页面",
-      project: "DaysCalculator",
-      date: today.toISOString().split('T')[0],
-      status: "in_progress",
-      keywords: "business day calculator, working days between dates",
-      pages: "business-days-calculator.html",
-      desc: "研究并创建工作日计算器页面，优化相关长尾关键词"
-    },
-    {
-      id: "task-2", 
-      title: "crazychicken3d: 添加新游戏攻略页面",
-      project: "crazychicken3d",
-      date: new Date(today.getTime() + 86400000).toISOString().split('T')[0],
-      status: "todo",
-      keywords: "3d chicken game tips, crazy chicken strategy guide",
-      pages: "advanced-strategies.html",
-      desc: "创建高级游戏策略指南页面"
-    },
-    {
-      id: "task-3",
-      title: "GlobalLinguaHub: 英语学习新页面",
-      project: "GlobalLinguaHub",
-      date: new Date(today.getTime() + 172800000).toISOString().split('T')[0],
-      status: "todo",
-      keywords: "english vocabulary apps, vocabulary learning tools",
-      pages: "vocabulary-apps.html",
-      desc: "创建英语词汇学习应用推荐页面"
-    }
+    // Day 1
+    { project: "DaysCalculator", keywords: "date duration calculator, days between dates", pages: "date-duration.html", desc: "创建日期间隔时长计算页面" },
+    { project: "crazychicken3d", keywords: "chicken game levels, level guide", pages: "level-guide.html", desc: "创建关卡指南页面" },
+    // Day 3
+    { project: "GlobalLinguaHub", keywords: "language exchange apps, tandem language", pages: "language-exchange.html", desc: "创建语言交换应用推荐页面" },
+    { project: "symbol", keywords: "arrow symbols copy paste, unicode arrows", pages: "arrow-symbols.html", desc: "创建箭头符号页面" },
+    // Day 5
+    { project: "v0-clicker", keywords: "typing practice games, improve typing speed", pages: "typing-games.html", desc: "创建打字练习游戏页面" },
+    { project: "DaysCalculator", keywords: "time zone converter, timezone calculator", pages: "timezone-calculator.html", desc: "创建时区转换计算器页面" },
+    // Day 7
+    { project: "crazychicken3d", keywords: "chicken game achievements, unlock achievements", pages: "achievements-guide.html", desc: "成就系统指南页面" },
+    { project: "GlobalLinguaHub", keywords: "podcast learning english, listen english", pages: "english-podcasts.html", desc: "英语播客推荐页面" },
   ];
   
-  return tasks;
+  const result = [];
+  for (let i = 0; i < tasks.length; i++) {
+    const dayIndex = Math.floor(i / 2) * 2;
+    const date = new Date(today);
+    date.setDate(date.getDate() + dayIndex);
+    
+    result.push({
+      id: `task-${i + 1}`,
+      title: `${tasks[i].project}: ${tasks[i].desc}`,
+      project: tasks[i].project,
+      date: date.toISOString().split('T')[0],
+      status: i < 2 ? "in_progress" : "todo",
+      keywords: tasks[i].keywords,
+      pages: tasks[i].pages,
+      desc: tasks[i].desc
+    });
+  }
+  
+  return result;
 }
 
 export async function onRequestOptions(context) {

@@ -429,52 +429,49 @@
       const today = new Date();
       const tasks = [];
       
-      // 示例详细任务
-      const sampleTasks = [
-        {
-          title: "DaysCalculator: 创建日期计算器新页面",
-          project: "DaysCalculator",
-          keywords: "business day calculator, working days between dates",
-          pages: "business-days-calculator.html",
-          desc: "研究并创建工作日计算器页面，优化相关长尾关键词"
-        },
-        {
-          title: "crazychicken3d: 添加新游戏攻略页面",
-          project: "crazychicken3d", 
-          keywords: "3d chicken game tips, crazy chicken strategy guide",
-          pages: "advanced-strategies.html",
-          desc: "创建高级游戏策略指南页面"
-        },
-        {
-          title: "GlobalLinguaHub: 英语学习新页面",
-          project: "GlobalLinguaHub",
-          keywords: "english vocabulary apps, vocabulary learning tools",
-          pages: "vocabulary-apps.html",
-          desc: "创建英语词汇学习应用推荐页面"
-        },
-        {
-          title: "symbol: 符号网站新页面",
-          project: "symbol",
-          keywords: "heart symbols copy paste, love emojis",
-          pages: "heart-symbols.html",
-          desc: "创建爱心符号页面，收集各种爱心emoji"
-        },
-        {
-          title: "v0-clicker: 打字速度测试新页面",
-          project: "v0-clicker",
-          keywords: "typing speed test wpm, keyboard practice online",
-          pages: "typing-test-advanced.html",
-          desc: "创建高级打字速度测试页面"
-        }
+      // 详细任务计划 - 每2天每个项目更新一次
+      const schedule = [
+        // Day 1 (今天)
+        { project: "DaysCalculator", keywords: "date duration calculator, days between dates", pages: "date-duration.html", desc: "创建日期间隔时长计算页面" },
+        { project: "crazychicken3d", keywords: "chicken game levels, level guide", pages: "level-guide.html", desc: "创建关卡指南页面" },
+        
+        // Day 3
+        { project: "GlobalLinguaHub", keywords: "language exchange apps, tandem language", pages: "language-exchange.html", desc: "创建语言交换应用推荐页面" },
+        { project: "symbol", keywords: "arrow symbols copy paste, unicode arrows", pages: "arrow-symbols.html", desc: "创建箭头符号页面" },
+        
+        // Day 5
+        { project: "v0-clicker", keywords: "typing practice games, improve typing speed", pages: "typing-games.html", desc: "创建打字练习游戏页面" },
+        { project: "DaysCalculator", keywords: "time zone converter, timezone calculator", pages: "timezone-calculator.html", desc: "创建时区转换计算器页面" },
+        
+        // Day 7
+        { project: "crazychicken3d", keywords: "chicken game achievements, unlock achievements", pages: "achievements-guide.html", desc: "成就系统指南页面" },
+        { project: "GlobalLinguaHub", keywords: "podcast learning english, listen english", pages: "english-podcasts.html", desc: "英语播客推荐页面" },
+        
+        // Day 9
+        { project: "symbol", keywords: "math symbols copy, mathematical notation", pages: "math-symbols.html", desc: "创建数学符号页面" },
+        { project: "v0-clicker", keywords: "keyboard shortcuts, keyboard tips", pages: "keyboard-shortcuts.html", desc: "键盘快捷键页面" },
+        
+        // Day 11
+        { project: "DaysCalculator", keywords: "countdown timer, event countdown", pages: "event-countdown.html", desc: "创建活动倒计时页面" },
+        { project: "crazychicken3d", keywords: "chicken game skins, customize chicken", pages: "skins-gallery.html", desc: "皮肤展示页面" },
+        
+        // Day 13
+        { project: "GlobalLinguaHub", keywords: "english movies subtitles, learn english movies", pages: "english-movies.html", desc: "英语电影推荐页面" },
+        { project: "symbol", keywords: "emoji meanings, what does emoji mean", pages: "emoji-dictionary.html", desc: "Emoji 含义词典" },
       ];
       
-      // 添加示例任务
-      for (let i = 0; i < sampleTasks.length; i++) {
+      for (let i = 0; i < schedule.length; i++) {
+        const dayIndex = Math.floor(i / 2) * 2; // 每2天
         const date = new Date(today);
-        date.setDate(date.getDate() + i);
+        date.setDate(date.getDate() + dayIndex);
+        
         tasks.push({
           id: Date.now() + i,
-          ...sampleTasks[i],
+          title: `${schedule[i].project}: ${schedule[i].desc}`,
+          project: schedule[i].project,
+          keywords: schedule[i].keywords,
+          pages: schedule[i].pages,
+          desc: schedule[i].desc,
           date: date.toISOString().split('T')[0],
           status: i < 2 ? 'progress' : 'todo'
         });
