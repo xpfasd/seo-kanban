@@ -457,6 +457,19 @@
       loadTasks();
       renderDateRange();
       renderTasks();
+      renderDateRange();
+    }
+    
+    // 渲染日期范围
+    function renderDateRange() {
+      const today = new Date();
+      const past = new Date(today);
+      past.setDate(past.getDate() - 14);
+      const future = new Date(today);
+      future.setDate(future.getDate() + 14);
+      
+      document.getElementById('dateRange').textContent = 
+        `${past.toLocaleDateString('zh-CN')} - ${future.toLocaleDateString('zh-CN')}`;
     }
     
     // 加载任务
@@ -529,13 +542,6 @@
       }
       
       const past = new Date(today);
-      past.setDate(past.getDate() - 14);
-      const future = new Date(today);
-      future.setDate(future.getDate() + 14);
-      
-      document.getElementById('dateRange').textContent = 
-        `${past.toLocaleDateString('zh-CN')} - ${future.toLocaleDateString('zh-CN')}`;
-      
       return tasks;
     }
     
