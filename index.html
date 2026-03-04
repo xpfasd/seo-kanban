@@ -568,7 +568,7 @@
       const isFuture = task.date > today;
       return `
         <div class="task ${isPast ? 'past' : ''} ${isFuture ? 'future' : ''}" onclick="openModal('${task.id}')">
-          <div class="task-date">${formatDate(task.date)}</div>
+          <div class="task-date">#${task.id} · ${formatDate(task.date)}</div>
           <div class="task-title">${task.title}</div>
           ${task.keywords ? `<div class="task-keywords">🔑 ${task.keywords}</div>` : ''}
           ${task.pages ? `<div class="task-pages">📄 ${task.pages}</div>` : ''}
