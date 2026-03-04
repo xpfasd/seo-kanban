@@ -396,7 +396,59 @@
   </div>
 
   <script>
-    const PROJECTS = ['DaysCalculator', 'crazychicken3d', 'GlobalLinguaHub', 'symbol', 'v0-clicker', 'Scrandle', '其他'];
+    const PROJECTS = ['DaysCalculator', 'crazychicken3d', 'GlobalLinguaHub', 'symbol', 'v0-clicker', 'Scrandle', '其他1', '其他2'];
+    
+    // 每个项目的 SEO 关键词和页面模板
+    const PROJECT_TASKS = {
+      'DaysCalculator': [
+        { keywords: "date duration calculator, days between dates", page: "date-duration.html", desc: "日期间隔时长计算" },
+        { keywords: "time zone converter, timezone calculator", page: "timezone-calculator.html", desc: "时区转换计算" },
+        { keywords: "countdown timer, event countdown", page: "event-countdown.html", desc: "活动倒计时" },
+        { keywords: "birthday calculator, age from birthday", page: "birthday-calculator.html", desc: "生日年龄计算" }
+      ],
+      'crazychicken3d': [
+        { keywords: "popular io games, multiplayer browser games", page: "io-games.html", desc: "热门IO游戏" },
+        { keywords: "puzzle games embed, browser puzzle", page: "puzzle-games.html", desc: "益智小游戏" },
+        { keywords: "action games embed, browser action", page: "action-games.html", desc: "动作小游戏" },
+        { keywords: "arcade games online, retro games", page: "arcade-games.html", desc: "经典街机游戏" }
+      ],
+      'GlobalLinguaHub': [
+        { keywords: "language exchange apps, tandem language", page: "language-exchange.html", desc: "语言交换App" },
+        { keywords: "podcast learning english, listen english", page: "english-podcasts.html", desc: "英语播客" },
+        { keywords: "english movies subtitles, learn english", page: "english-movies.html", desc: "英语电影" },
+        { keywords: "flashcard apps, spaced repetition", page: "flashcard-apps.html", desc: "背单词App" }
+      ],
+      'symbol': [
+        { keywords: "arrow symbols copy paste, unicode arrows", page: "arrow-symbols.html", desc: "箭头符号" },
+        { keywords: "math symbols copy, mathematical notation", page: "math-symbols.html", desc: "数学符号" },
+        { keywords: "emoji meanings, what does emoji mean", page: "emoji-dictionary.html", desc: "Emoji含义" },
+        { keywords: "heart symbols copy, love emojis", page: "heart-symbols.html", desc: "爱心符号" }
+      ],
+      'v0-clicker': [
+        { keywords: "typing practice games, improve typing speed", page: "typing-games.html", desc: "打字练习游戏" },
+        { keywords: "keyboard shortcuts, keyboard tips", page: "keyboard-shortcuts.html", desc: "键盘快捷键" },
+        { keywords: "typing test wpm, measure typing speed", page: "typing-speed-test.html", desc: "打字速度测试" },
+        { keywords: "mechanical keyboard, keyboard review", page: "mechanical-keyboards.html", desc: "机械键盘" }
+      ],
+      'Scrandle': [
+        { keywords: "word game, scrabble alternative", page: "word-game.html", desc: "单词游戏" },
+        { keywords: "puzzle word game, letter game", page: "letter-puzzle.html", desc: "字母解谜游戏" },
+        { keywords: "multiplayer word game, online scrabble", page: "multiplayer-word.html", desc: "多人单词游戏" },
+        { keywords: "word search puzzles, find words", page: "word-search.html", desc: "找单词游戏" }
+      ],
+      '其他1': [
+        { keywords: "tool website, online utilities", page: "tools-collection.html", desc: "工具集合" },
+        { keywords: "productivity tools, online software", page: "productivity-apps.html", desc: "效率工具" },
+        { keywords: "free online tools, useful websites", page: "free-tools.html", desc: "免费工具" },
+        { keywords: "best online tools, web utilities", page: "best-tools.html", desc: "最佳工具" }
+      ],
+      '其他2': [
+        { keywords: "trending games 2026, popular games", page: "trending-games.html", desc: "热门游戏" },
+        { keywords: "browser games, no download games", page: "browser-games.html", desc: "网页游戏" },
+        { keywords: "free games online, play free", page: "free-games.html", desc: "免费游戏" },
+        { keywords: "mobile games, app games", page: "mobile-games.html", desc: "手机游戏" }
+      ]
+    };
     
     let tasks = [];
     
@@ -424,83 +476,46 @@
       localStorage.setItem('seo-tasks', JSON.stringify(tasks));
     }
     
-    // 默认任务
+    // 默认任务 - 每天4个项目，2天一轮循环
     function getDefaultTasks() {
       const today = new Date();
       const tasks = [];
       
-      // 详细任务计划 - 每天都有更新，每个项目每2天更新一次
-      // 5个项目交替，确保每天2-3个任务
-      const schedule = [
-        // Day 1 (今天)
-        { project: "DaysCalculator", keywords: "date duration calculator, days between dates", pages: "date-duration.html", desc: "日期间隔时长计算页面" },
-        { project: "crazychicken3d", keywords: "popular io games, multiplayer browser games", pages: "io-games-collection.html", desc: "嵌入热门IO游戏集合" },
-        { project: "GlobalLinguaHub", keywords: "language exchange apps, tandem language", pages: "language-exchange.html", desc: "语言交换应用推荐" },
-        
-        // Day 2
-        { project: "symbol", keywords: "arrow symbols copy paste, unicode arrows", pages: "arrow-symbols.html", desc: "箭头符号页面" },
-        { project: "v0-clicker", keywords: "typing practice games, improve typing speed", pages: "typing-games.html", desc: "打字练习游戏页面" },
-        
-        // Day 3
-        { project: "DaysCalculator", keywords: "time zone converter, timezone calculator", pages: "timezone-calculator.html", desc: "时区转换计算器" },
-        { project: "crazychicken3d", keywords: "puzzle games embed, browser puzzle", pages: "puzzle-games.html", desc: "嵌入热门益智小游戏" },
-        { project: "GlobalLinguaHub", keywords: "podcast learning english, listen english", pages: "english-podcasts.html", desc: "英语播客推荐" },
-        
-        // Day 4
-        { project: "symbol", keywords: "math symbols copy, mathematical notation", pages: "math-symbols.html", desc: "数学符号页面" },
-        { project: "v0-clicker", keywords: "keyboard shortcuts, keyboard tips", pages: "keyboard-shortcuts.html", desc: "键盘快捷键页面" },
-        
-        // Day 5
-        { project: "DaysCalculator", keywords: "countdown timer, event countdown", pages: "event-countdown.html", desc: "活动倒计时页面" },
-        { project: "crazychicken3d", keywords: "action games embed, browser action", pages: "action-games.html", desc: "嵌入热门动作小游戏" },
-        { project: "GlobalLinguaHub", keywords: "english movies subtitles, learn english movies", pages: "english-movies.html", desc: "英语电影推荐" },
-        
-        // Day 6
-        { project: "symbol", keywords: "emoji meanings, what does emoji mean", pages: "emoji-dictionary.html", desc: "Emoji 含义词典" },
-        { project: "v0-clicker", keywords: "typing test wpm, measure typing speed", pages: "typing-speed-test.html", desc: "打字速度测试页面" },
-        
-        // Day 7
-        { project: "DaysCalculator", keywords: "birthday calculator, age from birthday", pages: "birthday-calculator.html", desc: "生日年龄计算器" },
-        { project: "crazychicken3d", keywords: "arcade games online, retro games", pages: "arcade-games.html", desc: "嵌入经典街机游戏" },
-        { project: "GlobalLinguaHub", keywords: "flashcard apps, spaced repetition", pages: "flashcard-apps.html", desc: "背单词应用推荐" },
-        
-        // Day 8
-        { project: "symbol", keywords: "heart symbols copy, love emojis", pages: "heart-symbols.html", desc: "爱心符号页面" },
-        { project: "v0-clicker", keywords: "mechanical keyboard, keyboard review", pages: "mechanical-keyboards.html", desc: "机械键盘页面" },
-        
-        // Day 9
-        { project: "DaysCalculator", keywords: "work days calculator, business days", pages: "work-days-calculator.html", desc: "工作日计算器" },
-        { project: "crazychicken3d", keywords: "sports games embed, basketball football", pages: "sports-games.html", desc: "嵌入体育类小游戏" },
-        { project: "GlobalLinguaHub", keywords: "youtube english learning, learn from youtube", pages: "youtube-english.html", desc: "YouTube英语学习" },
-        
-        // Day 10
-        { project: "symbol", keywords: "music symbols, notes emoji", pages: "music-symbols.html", desc: "音乐符号页面" },
-        { project: "v0-clicker", keywords: "typing errors, common mistakes", pages: "typing-mistakes.html", desc: "常见打字错误" },
-      ];
+      const projectsList = Object.keys(PROJECT_TASKS);
+      const tasksPerDay = 4;
+      const cycleLength = 2;
+      const totalDays = 14;
       
-      for (let i = 0; i < schedule.length; i++) {
-        const dayIndex = i; // 每天都有任务
-        const date = new Date(today);
-        date.setDate(date.getDate() + dayIndex);
+      let taskId = 1;
+      for (let day = 0; day < totalDays; day++) {
+        const cycleDay = day % cycleLength;
+        const startIdx = cycleDay * tasksPerDay;
         
-        tasks.push({
-          id: Date.now() + i,
-          title: `${schedule[i].project}: ${schedule[i].desc}`,
-          project: schedule[i].project,
-          keywords: schedule[i].keywords,
-          pages: schedule[i].pages,
-          desc: schedule[i].desc,
-          date: date.toISOString().split('T')[0],
-          status: i < 3 ? 'progress' : 'todo'
-        });
+        for (let i = 0; i < tasksPerDay; i++) {
+          const projIdx = startIdx + i;
+          if (projIdx >= projectsList.length) break;
+          
+          const project = projectsList[projIdx];
+          const projectTaskList = PROJECT_TASKS[project];
+          const taskIdx = Math.floor(day / cycleLength) % projectTaskList.length;
+          const taskInfo = projectTaskList[taskIdx];
+          
+          const date = new Date(today);
+          date.setDate(date.getDate() + day);
+          
+          tasks.push({
+            id: Date.now() + taskId++,
+            title: `${project}: ${taskInfo.desc}`,
+            project: project,
+            keywords: taskInfo.keywords,
+            pages: taskInfo.page,
+            desc: taskInfo.desc,
+            date: date.toISOString().split('T')[0],
+            status: day === 0 ? 'progress' : 'todo'
+          });
+        }
       }
       
-      return tasks;
-    }
-    
-    // 渲染日期范围
-    function renderDateRange() {
-      const today = new Date();
       const past = new Date(today);
       past.setDate(past.getDate() - 14);
       const future = new Date(today);
@@ -508,6 +523,8 @@
       
       document.getElementById('dateRange').textContent = 
         `${past.toLocaleDateString('zh-CN')} - ${future.toLocaleDateString('zh-CN')}`;
+      
+      return tasks;
     }
     
     // 渲染任务
