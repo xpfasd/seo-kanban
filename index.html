@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SEO 任务看板</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    :root {
+      --bg-dark: #1a1a2e;
+      --bg-card: #16213e;
+      --primary: #00d9ff;
+      --success: #00ff88;
+      --warning: #ffc107;
+      --danger: #ff6b6b;
+      --text: #fff;
+      --text-dim: #888;
+      --border: rgba(255,255,255,0.1);
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-card) 100%);
+      min-height: 100vh;
+      color: var(--text);
+      padding: 20px;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    
+    .header h1 {
+      font-size: 1.8rem;
+      background: linear-gradient(90deg, var(--primary), var(--success));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .header-actions {
+      display: flex;
+      gap: 12px;
+    }
+    
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+    
+    .btn-primary {
+      background: var(--primary);
+      color: #000;
+    }
+    
+    .btn-primary:hover {
+      background: #00b8d9;
+    }
+    
+    .btn-secondary {
+      background: rgba(255,255,255,0.1);
+      color: var(--text);
+    }
+    
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.2);
+    }
+    
+    .date-range {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--text-dim);
+      font-size: 0.9rem;
+    }
+    
+    .kanban {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    
+    @media (max-width: 900px) {
+      .kanban {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .column {
+      background: rgba(255,255,255,0.03);
+      border-radius: 12px;
+      padding: 16px;
+      min-height: 400px;
+    }
+    
+    .column-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .column-title {
+      font-size: 1rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .column-todo .column-title { color: var(--warning); }
+    .column-progress .column-title { color: var(--primary); }
+    .column-done .column-title { color: var(--success); }
+    
+    .task-count {
+      background: rgba(255,255,255,0.1);
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+    }
+    
+    .task-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    .task {
+      background: rgba(255,255,255,0.05);
+      border-radius: 10px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .task:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+    
+    .task-date {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+    
+    .task-title {
+      font-size: 0.95rem;
+      margin-bottom: 6px;
+    }
+    
+    .task-project {
+      display: inline-block;
+      font-size: 0.7rem;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(0,217,255,0.15);
+      color: var(--primary);
+    }
+    
+    .task.past {
+      opacity: 0.5;
+    }
+    
+    .task.future {
+      border-style: dashed;
+    }
+    
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.8);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .modal.show {
+      display: flex;
+    }
+    
+    .modal-content {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 24px;
+      width: 90%;
+      max-width: 500px;
+      border: 1px solid var(--border);
+    }
+    
+    .modal h2 {
+      margin-bottom: 20px;
+      font-size: 1.2rem;
+    }
+    
+    .form-group {
+      margin-bottom: 16px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+    
+    .form-group textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+    
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+    
+    .btn-danger {
+      background: var(--danger);
+      color: #fff;
+    }
+    
+    .json-link {
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+    
+    .json-link:hover {
+      text-decoration: underline;
+    }
+    
+    .add-task-btn {
+      width: 100%;
+      padding: 12px;
+      border: 2px dashed var(--border);
+      border-radius: 10px;
+      background: transparent;
+      color: var(--text-dim);
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 12px;
+    }
+    
+    .add-task-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>📋 SEO 任务看板</h1>
+    <div class="date-range">
+      <span id="dateRange"></span>
+    </div>
+    <div class="header-actions">
+      <a href="/tasks.json" target="_blank" class="json-link">📄 JSON</a>
+      <button class="btn btn-secondary" onclick="exportData()">💾 导出</button>
+      <button class="btn btn-primary" onclick="openModal()">+ 新建任务</button>
+    </div>
+  </div>
+  
+  <div class="kanban">
+    <div class="column column-todo">
+      <div class="column-header">
+        <span class="column-title">📝 待处理</span>
+        <span class="task-count" id="todoCount">0</span>
+      </div>
+      <div class="task-list" id="todoList"></div>
+      <button class="add-task-btn" onclick="openModal()">+ 添加任务</button>
+    </div>
+    
+    <div class="column column-progress">
+      <div class="column-header">
+        <span class="column-title">🔄 进行中</span>
+        <span class="task-count" id="progressCount">0</span>
+      </div>
+      <div class="task-list" id="progressList"></div>
+    </div>
+    
+    <div class="column column-done">
+      <div class="column-header">
+        <span class="column-title">✅ 已完成</span>
+        <span class="task-count" id="doneCount">0</span>
+      </div>
+      <div class="task-list" id="doneList"></div>
+    </div>
+  </div>
+  
+  <div class="modal" id="taskModal">
+    <div class="modal-content">
+      <h2 id="modalTitle">新建任务</h2>
+      <form id="taskForm">
+        <input type="hidden" id="taskId">
+        <div class="form-group">
+          <label>任务标题</label>
+          <input type="text" id="taskTitle" required placeholder="例如：创建日期计算器新页面">
+        </div>
+        <div class="form-group">
+          <label>项目</label>
+          <select id="taskProject" required>
+            <option value="DaysCalculator">DaysCalculator</option>
+            <option value="crazychicken3d">crazychicken3d</option>
+            <option value="GlobalLinguaHub">GlobalLinguaHub</option>
+            <option value="symbol">symbol</option>
+            <option value="v0-clicker">v0-clicker</option>
+            <option value="Scrandle">Scrandle</option>
+            <option value="其他">其他</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>日期</label>
+          <input type="date" id="taskDate" required>
+        </div>
+        <div class="form-group">
+          <label>状态</label>
+          <select id="taskStatus">
+            <option value="todo">待处理</option>
+            <option value="progress">进行中</option>
+            <option value="done">已完成</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>描述</label>
+          <textarea id="taskDesc" placeholder="可选描述..."></textarea>
+        </div>
+        <div class="modal-actions">
+          <button type="submit" class="btn btn-primary">保存</button>
+          <button type="button" class="btn btn-danger" onclick="deleteTask()" id="deleteBtn" style="display:none">删除</button>
+          <button type="button" class="btn btn-secondary" onclick="closeModal()">取消</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const PROJECTS = ['DaysCalculator', 'crazychicken3d', 'GlobalLinguaHub', 'symbol', 'v0-clicker', 'Scrandle', '其他'];
+    
+    let tasks = [];
+    
+    // 初始化
+    function init() {
+      loadTasks();
+      renderDateRange();
+      renderTasks();
+    }
+    
+    // 加载任务
+    function loadTasks() {
+      const saved = localStorage.getItem('seo-tasks');
+      if (saved) {
+        tasks = JSON.parse(saved);
+      } else {
+        // 默认任务
+        tasks = getDefaultTasks();
+        saveTasks();
+      }
+    }
+    
+    // 保存任务
+    function saveTasks() {
+      localStorage.setItem('seo-tasks', JSON.stringify(tasks));
+    }
+    
+    // 默认任务
+    function getDefaultTasks() {
+      const today = new Date();
+      const tasks = [];
+      
+      // 历史任务 (过去2周)
+      for (let i = -14; i < 0; i++) {
+        const date = new Date(today);
+        date.setDate(date.getDate() + i);
+        if (i % 3 === 0) {
+          tasks.push({
+            id: Date.now() + Math.random(),
+            title: `SEO页面更新 ${date.toLocaleDateString('zh-CN')}`,
+            project: PROJECTS[Math.floor(Math.random() * 3)],
+            date: date.toISOString().split('T')[0],
+            status: 'done',
+            desc: '已完成'
+          });
+        }
+      }
+      
+      // 未来2周任务
+      for (let i = 0; i < 14; i++) {
+        const date = new Date(today);
+        date.setDate(date.getDate() + i);
+        if (i % 2 === 0) {
+          tasks.push({
+            id: Date.now() + Math.random(),
+            title: `SEO页面更新 ${date.toLocaleDateString('zh-CN')}`,
+            project: PROJECTS[i % 3],
+            date: date.toISOString().split('T')[0],
+            status: i < 3 ? 'progress' : 'todo',
+            desc: ''
+          });
+        }
+      }
+      
+      return tasks;
+    }
+    
+    // 渲染日期范围
+    function renderDateRange() {
+      const today = new Date();
+      const past = new Date(today);
+      past.setDate(past.getDate() - 14);
+      const future = new Date(today);
+      future.setDate(future.getDate() + 14);
+      
+      document.getElementById('dateRange').textContent = 
+        `${past.toLocaleDateString('zh-CN')} - ${future.toLocaleDateString('zh-CN')}`;
+    }
+    
+    // 渲染任务
+    function renderTasks() {
+      const today = new Date().toISOString().split('T')[0];
+      
+      const todoTasks = tasks.filter(t => t.status === 'todo').sort((a,b) => a.date.localeCompare(b.date));
+      const progressTasks = tasks.filter(t => t.status === 'progress').sort((a,b) => a.date.localeCompare(b.date));
+      const doneTasks = tasks.filter(t => t.status === 'done').sort((a,b) => b.date.localeCompare(a.date));
+      
+      document.getElementById('todoList').innerHTML = todoTasks.map(t => renderTask(t, today)).join('');
+      document.getElementById('progressList').innerHTML = progressTasks.map(t => renderTask(t, today)).join('');
+      document.getElementById('doneList').innerHTML = doneTasks.map(t => renderTask(t, today)).join('');
+      
+      document.getElementById('todoCount').textContent = todoTasks.length;
+      document.getElementById('progressCount').textContent = progressTasks.length;
+      document.getElementById('doneCount').textContent = doneTasks.length;
+    }
+    
+    // 渲染单个任务
+    function renderTask(task, today) {
+      const isPast = task.date < today;
+      const isFuture = task.date > today;
+      return `
+        <div class="task ${isPast ? 'past' : ''} ${isFuture ? 'future' : ''}" onclick="openModal('${task.id}')">
+          <div class="task-date">${formatDate(task.date)}</div>
+          <div class="task-title">${task.title}</div>
+          <span class="task-project">${task.project}</span>
+        </div>
+      `;
+    }
+    
+    // 格式化日期
+    function formatDate(dateStr) {
+      const date = new Date(dateStr);
+      const today = new Date();
+      today.setHours(0,0,0,0);
+      const target = new Date(dateStr);
+      target.setHours(0,0,0,0);
+      
+      const diff = Math.round((target - today) / (1000*60*60*24));
+      
+      if (diff === 0) return '📅 今天';
+      if (diff === 1) return '📅 明天';
+      if (diff === -1) return '📅 昨天';
+      if (diff < 0) return `📅 ${Math.abs(diff)}天前`;
+      if (diff <= 7) return `📅 ${diff}天后`;
+      return `📅 ${date.toLocaleDateString('zh-CN', {month:'numeric', day:'numeric'})}`;
+    }
+    
+    // 打开弹窗
+    function openModal(taskId = null) {
+      const modal = document.getElementById('taskModal');
+      const form = document.getElementById('taskForm');
+      const title = document.getElementById('modalTitle');
+      const deleteBtn = document.getElementById('deleteBtn');
+      
+      if (taskId) {
+        const task = tasks.find(t => t.id == taskId);
+        if (task) {
+          title.textContent = '编辑任务';
+          document.getElementById('taskId').value = task.id;
+          document.getElementById('taskTitle').value = task.title;
+          document.getElementById('taskProject').value = task.project;
+          document.getElementById('taskDate').value = task.date;
+          document.getElementById('taskStatus').value = task.status;
+          document.getElementById('taskDesc').value = task.desc || '';
+          deleteBtn.style.display = 'block';
+        }
+      } else {
+        title.textContent = '新建任务';
+        form.reset();
+        document.getElementById('taskId').value = '';
+        document.getElementById('taskDate').value = new Date().toISOString().split('T')[0];
+        deleteBtn.style.display = 'none';
+      }
+      
+      modal.classList.add('show');
+    }
+    
+    // 关闭弹窗
+    function closeModal() {
+      document.getElementById('taskModal').classList.remove('show');
+    }
+    
+    // 保存任务
+    document.getElementById('taskForm').onsubmit = function(e) {
+      e.preventDefault();
+      
+      const id = document.getElementById('taskId').value;
+      const taskData = {
+        id: id ? id : Date.now().toString(),
+        title: document.getElementById('taskTitle').value,
+        project: document.getElementById('taskProject').value,
+        date: document.getElementById('taskDate').value,
+        status: document.getElementById('taskStatus').value,
+        desc: document.getElementById('taskDesc').value
+      };
+      
+      if (id) {
+        const index = tasks.findIndex(t => t.id == id);
+        if (index > -1) tasks[index] = taskData;
+      } else {
+        tasks.push(taskData);
+      }
+      
+      saveTasks();
+      renderTasks();
+      closeModal();
+    };
+    
+    // 删除任务
+    function deleteTask() {
+      const id = document.getElementById('taskId').value;
+      if (id && confirm('确定删除这个任务吗？')) {
+        tasks = tasks.filter(t => t.id != id);
+        saveTasks();
+        renderTasks();
+        closeModal();
+      }
+    }
+    
+    // 导出数据
+    function exportData() {
+      const data = JSON.stringify(tasks, null, 2);
+      const blob = new Blob([data], {type: 'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'seo-tasks.json';
+      a.click();
+    }
+    
+    // 点击背景关闭
+    document.getElementById('taskModal').onclick = function(e) {
+      if (e.target === this) closeModal();
+    };
+    
+    init();
+  </script>
+</body>
+</html>

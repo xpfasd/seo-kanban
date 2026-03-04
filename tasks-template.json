@@ -1,0 +1,66 @@
+{
+  "version": "1.0",
+  "description": "SEO Tasks JSON API",
+  "generated_at": "{{GENERATED_AT}}",
+  "tasks": [
+    {
+      "id": "todo-1",
+      "title": "为 DaysCalculator 添加新 SEO 页面",
+      "project": "DaysCalculator",
+      "date": "{{DATE}}",
+      "status": "todo",
+      "action": "create_page",
+      "details": "创建一个新的日期计算器相关 SEO 页面"
+    },
+    {
+      "id": "todo-2",
+      "title": "为 crazychicken3d 添加新 SEO 页面",
+      "project": "crazychicken3d",
+      "date": "{{DATE}}",
+      "status": "todo",
+      "action": "create_page",
+      "details": "创建一个新的 3D 游戏相关 SEO 页面"
+    },
+    {
+      "id": "todo-3",
+      "title": "为 GlobalLinguaHub 添加新 SEO 页面",
+      "project": "GlobalLinguaHub",
+      "date": "{{DATE}}",
+      "status": "todo",
+      "action": "create_page",
+      "details": "创建一个新的语言学习相关 SEO 页面"
+    }
+  ],
+  "projects": {
+    "DaysCalculator": {
+      "github": "xpfasd/DaysCalculator",
+      "site": "https://dayscalculator.app/",
+      "seo_target": 10,
+      "seo_done": 8
+    },
+    "crazychicken3d": {
+      "github": "xpfasd/crazychicken3d",
+      "site": "https://crazychicken3d.pages.dev/",
+      "seo_target": 10,
+      "seo_done": 6
+    },
+    "GlobalLinguaHub": {
+      "github": "xpfasd/GlobalLinguaHub",
+      "site": "https://global-lingua-hub.vercel.app/",
+      "seo_target": 10,
+      "seo_done": 6
+    },
+    "symbol": {
+      "github": "xpfasd/symbol",
+      "site": "https://symbolcopyandpaste.org/",
+      "seo_target": 5,
+      "seo_done": 3
+    },
+    "v0-clicker": {
+      "github": "xpfasd/v0-clicker",
+      "site": null,
+      "seo_target": 5,
+      "seo_done": 3
+    }
+  }
+}

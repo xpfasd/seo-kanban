@@ -1,0 +1,2 @@
+# Cloudflare Pages Redirects
+/tasks.json /tasks.json/index.html 200
