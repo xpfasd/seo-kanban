@@ -1,17 +1,38 @@
 // Cloudflare Pages Function for /tasks.json
+const GITHUB_RAW_URL = "https://raw.githubusercontent.com/xpfasd/seo-kanban/main/data/completed.json";
+
+async function getCompletedTasks() {
+  try {
+    const response = await fetch(GITHUB_RAW_URL);
+    if (response.ok) {
+      const data = await response.json();
+      return data.completed || [];
+    }
+  } catch (e) {
+    console.log('Could not fetch completed tasks:', e.message);
+  }
+  return [];
+}
+
 export async function onRequestGet(context) {
   const today = new Date();
   
-  // 从 localStorage 读取任务 (在 Edge 环境下不可用，这里返回默认任务)
-  // 实际部署时可以使用 Cloudflare KV 存储
+  // 获取已完成的任务ID
+  const completedIds = await getCompletedTasks();
   
   const defaultTasks = generateDefaultTasks(today);
+  
+  // 标记已完成的任务
+  const tasksWithStatus = defaultTasks.map(task => ({
+    ...task,
+    status: completedIds.includes(task.id) ? "done" : task.status
+  }));
   
   const response = {
     version: "1.0",
     description: "SEO Tasks JSON API - 包含详细关键词和目标页面",
     generated_at: today.toISOString(),
-    tasks: defaultTasks,
+    tasks: tasksWithStatus,
     projects: {
       "DaysCalculator": {
         "github": "xpfasd/DaysCalculator",
