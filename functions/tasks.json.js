@@ -41,7 +41,7 @@ export async function onRequestGet(context) {
         "seo_done": 8
       },
       "crazychicken3d": {
-        "github": "xpfasd/crazychicken3d",
+        "github": "xpfasd/CrazyChickenLanding",
         "site": "https://crazychicken3d.pages.dev/",
         "seo_target": 10,
         "seo_done": 6
